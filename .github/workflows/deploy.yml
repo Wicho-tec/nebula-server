@@ -30,13 +30,13 @@ jobs:
         with:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
-          allowed-account-ids: '911797457485'
       - uses: aws-actions/amazon-ecr-login@v2
         id: login-ecr
       - name: Construir y publicar imagen
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
+          test "$(aws sts get-caller-identity --query Account --output text)" = '911797457485'
           IMAGE="$REGISTRY/$ECR_REPOSITORY:$GITHUB_SHA"
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
