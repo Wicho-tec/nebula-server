@@ -1,0 +1,10 @@
+tools/
+referencias/
+**/.terraform/
+**/*.tfstate*
+**/*.tfplan
+**/*.tfvars
+**/backend.hcl
+evidencias/
+**/__pycache__/
+**/*.pyc
