@@ -22,9 +22,9 @@ resource "helm_release" "agones" {
   timeout          = 600
   values = [yamlencode({
     agones = {
-      featureGates = "PlayerTracking=true"
-      allocator    = { service = { type = "ClusterIP" } }
-      controller   = { replicas = 1 }
+      ping       = { install = false }
+      allocator  = { install = false, service = { serviceType = "ClusterIP" } }
+      controller = { replicas = 1 }
     }
   })]
   depends_on = [module.eks, aws_iam_role_policy.operator]
