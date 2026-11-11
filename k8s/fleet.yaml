@@ -1,0 +1,39 @@
+apiVersion: agones.dev/v1
+kind: Fleet
+metadata:
+  name: nebula-fleet
+spec:
+  replicas: 3
+  template:
+    spec:
+      ports:
+        - name: game
+          containerPort: 7654
+          protocol: TCP
+      health:
+        initialDelaySeconds: 10
+        periodSeconds: 5
+      template:
+        spec:
+          nodeSelector:
+            rol: juego
+          # ponytail: lab source mounted via ConfigMap; rebuild the immutable image for production.
+          volumes:
+            - name: server-source
+              configMap:
+                name: nebula-server-startup
+          containers:
+            - name: nebula
+              image: 911797457485.dkr.ecr.us-east-1.amazonaws.com/nebula-server:891a79a8cbab3757be60ad4fb8ff1daae8eab0e6
+              volumeMounts:
+                - name: server-source
+                  mountPath: /app/server.py
+                  subPath: server.py
+                  readOnly: true
+              ports:
+                - name: metrics
+                  containerPort: 9100
+              resources:
+                requests: {cpu: "250m", memory: "256Mi"}
+                limits: {cpu: "500m", memory: "512Mi"}
+
