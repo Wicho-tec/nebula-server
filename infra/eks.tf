@@ -88,7 +88,7 @@ module "eks" {
     }
     agones_webhook = {
       description                   = "Agones admission webhooks from EKS control plane"
-      protocol                      = "tcp", from_port = 8080, to_port = 8080, type = "ingress"
+      protocol                      = "tcp", from_port = 8081, to_port = 8081, type = "ingress"
       source_cluster_security_group = true
     }
   }
